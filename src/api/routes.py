@@ -45,6 +45,19 @@ def pago():
     data = request.json
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
-    print(user_id)
+    print(user)
 
     return jsonify("Pago exitoso")
+
+
+
+@api.route('/user', methods=['GET'])
+def get_user():
+    users = User.query.all() # Devuelve un array de objetos (users)
+    data = []
+
+    for user in users:
+         data.append(user.serialize())
+
+    return jsonify(data)
+
