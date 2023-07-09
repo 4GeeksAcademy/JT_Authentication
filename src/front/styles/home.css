@@ -6,6 +6,10 @@
     on that page only (the ones not reused in other pages).
 */
 
+.imagen {
+    max-width: 50% !important
+}
+
 .fa-smile {
     color: rgb(252, 214, 4)
 }
@@ -37,6 +41,21 @@ h2 {
     transition: transform 0.2s,
 }
 
+.button_1 {
+    background-color: #97a1a4;
+    color: white
+}
+
+.button_1:hover {
+    background-color: #fa4e5d;
+    color: white;
+}
+
+.button_1:active {
+    transform: scale(0.9); 
+    transition: transform 0.2s,
+}
+
 .button_2 {
     background-color: #fac007;
 }
@@ -49,4 +68,8 @@ h2 {
 .button_2:active {
     transform: scale(0.9); 
     transition: transform 0.2s,
+}
+
+.titulo {
+    color: #283e46
 }

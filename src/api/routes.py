@@ -10,14 +10,21 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 api = Blueprint('api', __name__)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+@api.route('/signup', methods=['POST'])
+def signup():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+    name = data.get('name')
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+    if not email or not password or not name:
+         return jsonify({"message": "Todos los datos son requeridos"})
+    
+    new_user = User(email=email, password=password, name=name)
+    db.session.add(new_user)
+    db.session.commit()
 
-    return jsonify(response_body), 200
+    return jsonify(name=name, email=email), 200
 
 
 @api.route('/login', methods=['POST'])
