@@ -30,31 +30,30 @@ def signup():
 @api.route('/login', methods=['POST'])
 def login():
     data = request.json
-    email = data.get('email')
+    name = data.get('name')
     password = data.get('password')
 
-    if not email or not password:
-        return jsonify({"message": "Error email y password son requeridos"})
+    if not name or not password:
+        return jsonify({"message": "Nombre y contraseña son requeridos"})
 
-    user = User.query.filter_by(email=email, password=password).first()
+    user = User.query.filter_by(name=name, password=password).first()
 
     if not user:
             return jsonify({"message": "Error, datos incorrectos"})
     
-    token = create_access_token(identity=user.id)
+    token = create_access_token(identity=user.name)
 
     return jsonify({"token": token})
 
 
-@api.route('/payment', methods=['POST'])
+@api.route('/privatearea', methods=['POST'])
 @jwt_required()
-def pago():
+def private():
     data = request.json
-    user_id = get_jwt_identity()
-    user = User.query.get(user_id)
+    user = get_jwt_identity()
     print(user)
 
-    return jsonify("Pago exitoso")
+    return jsonify("Acceso")
 
 
 

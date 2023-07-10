@@ -15,6 +15,11 @@ export const Private = () => {
 		};
 
 
+	useEffect(() => {
+		const token = localStorage.getItem("jwt-token");
+		console.log("Token:", token);
+		}, []);
+
 	return (
 		
 		<div className="row justify-content-center" style={{ height: '70vh' }}>
