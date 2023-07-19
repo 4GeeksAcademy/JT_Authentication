@@ -30,31 +30,32 @@ def signup():
 @api.route('/login', methods=['POST'])
 def login():
     data = request.json
-    name = data.get('name')
-    password = data.get('password')
+    name = data.get('name', None)
+    password = data.get('password', None)
 
     if not name or not password:
-        return jsonify({"message": "Nombre y contraseña son requeridos"})
+        return jsonify({"message": "Nombre y contraseña son requeridos"}), 400
 
     user = User.query.filter_by(name=name, password=password).first()
 
-    if not user:
-            return jsonify({"message": "Error, datos incorrectos"})
+    if user is None:
+        return jsonify({"message": "Credenciales incorrectas"}), 401
     
     token = create_access_token(identity=user.name)
 
-    return jsonify({"token": token})
+    return jsonify({"token": token, "user_name": user.name}), 200
 
 
-@api.route('/privatearea', methods=['POST'])
+@api.route('/privatearea', methods=['GET'])
 @jwt_required()
 def private():
-    data = request.json
-    user = get_jwt_identity()
-    print(user)
+    user_name = get_jwt_identity()
+    user = User.query.filter_by(name=user_name).first()
 
-    return jsonify("Acceso")
+    if not user:
+        return jsonify({"message": "Error, no existe el usuario"})
 
+    return jsonify(user.serialize())
 
 
 @api.route('/user', methods=['GET'])
@@ -66,4 +67,5 @@ def get_user():
          data.append(user.serialize())
 
     return jsonify(data)
+
 

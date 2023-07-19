@@ -1,7 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+
+	const navigate = useNavigate();
+
+	const handleLogout = () => {
+		localStorage.removeItem('jwt-token');
+		navigate('/');
+	  };
+	
+
 	return (
 		<nav className="navbar navbar-light bg-dark">
 			<div className="container">
@@ -13,7 +22,7 @@ export const Navbar = () => {
 						<button className="btn btn-light mx-2"><i className="fas fa-user"></i></button>
 					</Link>
 					<Link to="/">
-						<button className="btn btn-danger"><i className="fas fa-sign-out-alt"></i></button>
+						<button className="btn btn-danger" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i></button>
 					</Link>
 				</div>
 			</div>

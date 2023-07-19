@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import chico from "../../img/chico.jpg";
 import "../../styles/home.css";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export const Home = () => {
@@ -16,11 +16,12 @@ export const Home = () => {
 		console.log("Token:", token);
 	  	}, []);
 
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		try {
-			const response = await fetch("https://julitar-silver-robot-pj76jgqgpqxh7vqj-3001.preview.app.github.dev/api/login", {
+			const response = await fetch((process.env.BACKEND_URL + "api/login"), {
 			  method: 'POST',
 			  headers: {
 				'Content-Type': 'application/json'
@@ -28,21 +29,19 @@ export const Home = () => {
 			  body: JSON.stringify({ name, password })
 			});
 		
-			if (response.ok) {
-			  const data = await response.json();
-			  const token = data.token;
-		
-			  localStorage.setItem("jwt-token", token);
+			const data = await response.json();
 
-			  navigate("/private");
-		
-			} else {
-			  throw new Error("There was a problem with the login request");
+			if (response.status === 200) {
+				const token = data.token;
+				localStorage.setItem("jwt-token", token);
+				navigate("/private");
+			  } else {
+				alert(data.message);
+			  }
+			} catch (error) {
+				console.error(error);
 			}
-		  } catch (error) {
-			console.error(error);
-		  }
-		};
+	};
 
 
 	return (
